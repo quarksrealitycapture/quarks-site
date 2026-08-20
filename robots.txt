@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://quarksrealitycapture.github.io/quarks-site/sitemap.xml
