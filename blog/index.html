@@ -42,6 +42,9 @@
   .nav-links a:hover{ color:var(--orange); }
   .btn{ display:inline-flex; align-items:center; gap:9px; font-family:var(--mono); font-size:13.5px; letter-spacing:.03em; padding:13px 22px; border-radius:2px; border:1px solid transparent; background:var(--orange); color:#fff; }
   .btn:hover{ background:var(--orange-dark); }
+  .nav-toggle{ display:none; background:none; border:none; cursor:pointer; padding:8px; margin:-8px; }
+  .nav-toggle svg{ display:block; width:22px; height:22px; }
+  .mobile-cta{ display:none; }
 
   .hero{ padding:72px 0 48px; border-bottom:1px solid var(--line); }
   .hero h1{ font-size:clamp(32px,4.4vw,46px); line-height:1.1; margin-bottom:16px; max-width:16ch; }
@@ -60,7 +63,23 @@
   .foot-wrap{ display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:12.5px; flex-wrap:wrap; gap:14px; }
 
   @media (max-width:700px){
-    .nav-links{ display:none; }
+    .nav-toggle{ display:flex; }
+    header .nav > .btn{ display:none; }
+    .nav-links{
+      display:none;
+      position:absolute;
+      top:100%; left:0; right:0;
+      flex-direction:column;
+      align-items:stretch;
+      gap:0;
+      background:var(--paper);
+      border-bottom:1px solid var(--line);
+      padding:4px 28px 20px;
+      box-shadow:0 12px 24px -12px rgba(20,35,31,0.18);
+    }
+    .nav-links.open{ display:flex; }
+    .nav-links a{ padding:14px 0; border-bottom:1px solid var(--line); font-size:15.5px; }
+    .mobile-cta{ display:block; margin-top:16px; text-align:center; }
   }
 </style>
 </head>
@@ -69,13 +88,18 @@
 <header>
   <nav class="nav">
     <a href="../index.html" class="brand"><span class="mark"></span>QUARKS <small>REALITY CAPTURE &amp; ENGINEERING</small></a>
-    <div class="nav-links">
+    <div class="nav-links" id="navLinks">
       <a href="../index.html#servicos">Serviços</a>
       <a href="../index.html#setores">Setores</a>
       <a href="../index.html#sobre">Sobre nós</a>
       <a href="index.html">Blog</a>
+      <a href="../index.html#contacto" class="btn mobile-cta">Pedir orçamento</a>
     </div>
     <a href="../index.html#contacto" class="btn">Pedir orçamento</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">
+      <svg id="navIconOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg id="navIconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
   </nav>
 </header>
 
@@ -102,6 +126,12 @@
         <p>Um guia direto sobre o que determina o custo de um levantamento topográfico em Portugal, para quem está a planear construir, comprar ou legalizar um terreno.</p>
         <span class="post-read">Ler artigo →</span>
       </a>
+      <a class="post-card" href="preciso-da-planta-da-minha-casa.html">
+        <span class="post-tag">Particulares</span>
+        <h2>Preciso da Planta da Minha Casa? Veja Quando (e Porquê)</h2>
+        <p>Se precisa de legalizar, vender ou fazer obras em casa e não tem a planta atualizada, este é o ponto de partida.</p>
+        <span class="post-read">Ler artigo →</span>
+      </a>
     </div>
   </div>
 </section>
@@ -113,5 +143,29 @@
   </div>
 </footer>
 
+<script>
+  (function(){
+    var toggle = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+    var iconOpen = document.getElementById('navIconOpen');
+    var iconClose = document.getElementById('navIconClose');
+    if(!toggle || !links) return;
+    function closeMenu(){
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded','false');
+      iconOpen.style.display='block';
+      iconClose.style.display='none';
+    }
+    toggle.addEventListener('click', function(){
+      var isOpen = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      iconOpen.style.display = isOpen ? 'none' : 'block';
+      iconClose.style.display = isOpen ? 'block' : 'none';
+    });
+    links.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', closeMenu);
+    });
+  })();
+</script>
 </body>
 </html>
